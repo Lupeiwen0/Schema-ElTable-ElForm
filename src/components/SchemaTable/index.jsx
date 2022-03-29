@@ -1,4 +1,4 @@
-import { cloneDeep, debounce } from "@/utils/lodashChunk";
+import { cloneDeep, debounce } from "@monorepo/utils/lodashChunk";
 import { ElLoading, ElTable } from "element-plus";
 import { h, resolveComponent } from "vue";
 
@@ -9,7 +9,6 @@ export default {
   data() {
     return {
       localInitFlag: false,
-      selectedRows: [],
       localLoading: false,
       localData: [],
       localPagination: Object.assign(
@@ -45,9 +44,15 @@ export default {
       type: Array,
       default: () => [],
     },
-    // 选中事件
-    rowSelection: {
-      type: Function,
+    // 开启选中列
+    selection: {
+      type: Boolean,
+      default: false,
+    },
+    // 选中数据
+    selectedRows: {
+      type: Array,
+      default: () => [],
     },
     // 展开行
     expand: {
@@ -63,6 +68,14 @@ export default {
     autoHeight: {
       type: Boolean,
       default: false,
+    },
+    /**
+     * 列固定 可选参数
+     * [index | selection | expand]
+     */
+    fixed: {
+      type: Array,
+      default: () => [],
     },
     // 显示分页
     showPagination: {
@@ -332,18 +345,6 @@ export default {
     doLayout() {
       this.$refs["ElTableRef"].doLayout();
     },
-    // scrolls to a particular set of coordinates
-    scrollTo({ top, left }) {
-      this.$refs["ElTableRef"].scrollTo({ top, left });
-    },
-    // set vertical scroll position
-    setScrollTop() {
-      this.$refs["ElTableRef"].setScrollTop();
-    },
-    // set horizontal scroll position
-    setScrollLeft() {
-      this.$refs["ElTableRef"].setScrollLeft();
-    },
     // export Methods end=====================================================================================
   },
   render() {
@@ -374,7 +375,7 @@ export default {
       });
     }
     // 添加选择项
-    if (typeof this.rowSelection === "function") {
+    if (this.selection) {
       localColumns.unshift({
         type: "selection",
         width: "50",
@@ -408,9 +409,8 @@ export default {
         }}
         // 多选 - 选中变化
         onSelectionChange={(selection) => {
-          if (typeof this.rowSelection === "function") {
-            this.rowSelection(selection);
-          }
+          this.$emit("update:selectedRows", selection);
+          this.$emit("selectionChange", selection);
         }}
         // 展开行
         onExpandChange={(expandedRows, expanded) => {
