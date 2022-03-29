@@ -7,7 +7,7 @@ interface props {
   rowKey: String;
   columns: tableColumnsItem[];
   data: (e: parameter) => Promise<sourceData>;
-  rowSelection?: (selection: any) => void;
+  selection?: Boolean; // 开启 多选  v-model:selection
   expand?: Boolean; // 开启 折叠扩展列
   index?: Boolean; // 开启序号列
   autoHeight?: Boolean; // 自动计算表格高度
