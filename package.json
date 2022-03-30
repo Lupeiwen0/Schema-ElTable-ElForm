@@ -35,10 +35,14 @@
   },
   "private": false,
   "keywords": [
-    "vue3",
+    "json-form",
+    "json-table",
+    "json-el-form",
+    "json-el-table",
     "element-plus",
     "schemaElTable",
-    "schemaElForm"
+    "schemaElForm",
+    "vue3"
   ],
   "author": "lu_xiaoxi",
   "license": "MIT"
