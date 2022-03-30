@@ -2071,7 +2071,6 @@ var index = {
   data() {
     return {
       localInitFlag: false,
-      selectedRows: [],
       localLoading: false,
       localData: [],
       localPagination: Object.assign({}, {
@@ -2100,8 +2099,13 @@ var index = {
       type: Array,
       default: () => []
     },
-    rowSelection: {
-      type: Function
+    selection: {
+      type: Boolean,
+      default: false
+    },
+    selectedRows: {
+      type: Array,
+      default: () => []
     },
     expand: {
       type: Boolean,
@@ -2114,6 +2118,10 @@ var index = {
     autoHeight: {
       type: Boolean,
       default: false
+    },
+    fixed: {
+      type: Array,
+      default: () => []
     },
     showPagination: {
       type: Boolean,
@@ -2327,21 +2335,6 @@ var index = {
     },
     doLayout() {
       this.$refs["ElTableRef"].doLayout();
-    },
-    scrollTo({
-      top,
-      left
-    }) {
-      this.$refs["ElTableRef"].scrollTo({
-        top,
-        left
-      });
-    },
-    setScrollTop() {
-      this.$refs["ElTableRef"].setScrollTop();
-    },
-    setScrollLeft() {
-      this.$refs["ElTableRef"].setScrollLeft();
     }
   },
   render() {
@@ -2366,7 +2359,7 @@ var index = {
         fixed: this.startColumnsFixed || this.indexFixed
       });
     }
-    if (typeof this.rowSelection === "function") {
+    if (this.selection) {
       localColumns.unshift({
         type: "selection",
         width: "50",
@@ -2396,9 +2389,8 @@ var index = {
         this.$emit("currentChange", currentRow, oldCurrentRow);
       },
       "onSelectionChange": (selection) => {
-        if (typeof this.rowSelection === "function") {
-          this.rowSelection(selection);
-        }
+        this.$emit("update:selectedRows", selection);
+        this.$emit("selection-change", selection);
       },
       "onExpandChange": (expandedRows, expanded) => {
         this.expandChange(expandedRows, expanded);

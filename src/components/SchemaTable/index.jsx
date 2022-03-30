@@ -1,4 +1,4 @@
-import { cloneDeep, debounce } from "@monorepo/utils/lodashChunk";
+import { cloneDeep, debounce } from "@/utils/lodashChunk";
 import { ElLoading, ElTable } from "element-plus";
 import { h, resolveComponent } from "vue";
 
@@ -410,7 +410,7 @@ export default {
         // 多选 - 选中变化
         onSelectionChange={(selection) => {
           this.$emit("update:selectedRows", selection);
-          this.$emit("selectionChange", selection);
+          this.$emit("selection-change", selection);
         }}
         // 展开行
         onExpandChange={(expandedRows, expanded) => {
