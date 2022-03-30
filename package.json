@@ -1,6 +1,6 @@
 {
   "name": "schema-eltable-elform",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "element-plus ElTable for JSON Schema, ElForm for JSON Schema",
   "scripts": {
     "build": "vite build --mode production",
